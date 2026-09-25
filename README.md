@@ -2,39 +2,38 @@
 
 **Live: https://kunalkatiyar.github.io/continuity-bench-leaderboard/**
 
-Static leaderboard for [continuity-bench](https://github.com/KunalKatiyar/continuity-bench): how well do models
-detect continuity errors in novel-length fiction, and what does each detection cost?
+How well do models spot continuity errors in novel-length fiction, and what does each
+catch cost? This repo is just the scoreboard. The corpus builder, the evaluation harness
+and the Jev pipeline live in
+[continuity-bench](https://github.com/KunalKatiyar/continuity-bench).
 
-**This repo is generated output.** Nothing here is edited by hand. The site, the
-harness and the corpus builder live in the benchmark repo; this repo exists so the
-leaderboard can be hosted and shared on its own.
-
-## Hosting
-
-No build step, no dependencies — it is one self-contained `index.html`.
-
-- **GitHub Pages:** Settings → Pages → deploy from branch `main`, folder `/`. The
-  `.nojekyll` file is already present so Pages serves the file as-is.
-- **Anything else:** serve the directory, or open `index.html` from disk.
-
-## Regenerating
-
-From the benchmark repo:
+Nothing here is hand-edited. It is one self-contained `index.html` plus the raw per-run
+JSON, regenerated from the benchmark repo with:
 
 ```bash
 ./publish_leaderboard.sh ../continuity-bench-leaderboard
 ```
 
-That re-renders `index.html` and refreshes `data/results/`, which holds one JSON per
-run — every number on the page, plus per-novel and per-rule breakdowns that the page
-does not show.
+## Hosting it
+
+No build step, no dependencies. GitHub Pages serves it from the branch root, and
+`.nojekyll` is already there so the file goes out untouched. Anywhere else, serve the
+directory or just open `index.html`.
 
 ## Reading it
 
-The headline metric is **J = recall − false-positive rate**, not F1. On this corpus
-every injected passage is paired with the same passage unedited, so flagging everything
-scores F1 0.667 while discriminating nothing — a real model has scored exactly that.
-J is 0 for any such strategy and 1 for a perfect one.
+The headline number is **J = recall − false-positive rate**, not F1. Every injected
+passage in this corpus is paired with the same passage left alone, so flagging everything
+scores F1 0.667 while separating nothing. An 8B model has scored exactly that. J is 0 for
+any such strategy and 1 for a perfect one.
 
-Integrity checks are listed separately from contenders. They are not models; they are
-the heuristics and diagnostics that decide whether the leaderboard is worth reading.
+Each run carries a 95% interval, and two cases that look alike get marked differently: an
+interval tight around zero means the model genuinely doesn't discriminate, while a wide
+one means the run was too small to tell.
+
+Integrity checks are listed apart from the contenders. They aren't models. They are the
+heuristics and diagnostics that decide whether the board is worth reading at all, and one
+of them tops +0.699 by exploiting the release format rather than reading the text.
+
+`data/results/` holds one JSON per run, with the per-novel and per-rule breakdowns the
+page leaves out.
