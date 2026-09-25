@@ -1,6 +1,8 @@
 # Continuity Bench — leaderboard
 
-Static leaderboard for [continuity-bench](../continuity-bench): how well do models
+**Live: https://kunalkatiyar.github.io/continuity-bench-leaderboard/**
+
+Static leaderboard for [continuity-bench](https://github.com/KunalKatiyar/continuity-bench): how well do models
 detect continuity errors in novel-length fiction, and what does each detection cost?
 
 **This repo is generated output.** Nothing here is edited by hand. The site, the
